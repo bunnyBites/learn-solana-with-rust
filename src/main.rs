@@ -7,6 +7,7 @@ fn main() {
     let rpc_url = String::from("http://127.0.0.1:8899");
     let client = RpcClient::new_with_commitment(rpc_url, CommitmentConfig::confirmed());
 
+    // get sols (this are used for transactions)
     match client.request_airdrop(&pubkey, LAMPORTS_PER_SOL) {
         Ok(sig) => loop {
             if let Ok(confirmed) = client.confirm_transaction(&sig) {
@@ -18,4 +19,13 @@ fn main() {
         },
         Err(_) => println!("Error requesting airdrop"),
     };
+
+    // check the available sols for our wallet (with public key)
+    match client.get_balance(&pubkey) {
+        Ok(balance) => {
+            println!("{}", balance);
+        },
+        Err(_) => println!("Error getting balance"),
+    };
+
 }
