@@ -1,10 +1,21 @@
+extern crate dotenv;
 use solana_client::rpc_client::RpcClient;
-use solana_sdk::{commitment_config::CommitmentConfig, native_token::LAMPORTS_PER_SOL, signature::Keypair, signer::Signer};
+use solana_sdk::{commitment_config::CommitmentConfig, native_token::LAMPORTS_PER_SOL, pubkey::Pubkey };
+use dotenv::dotenv;
+use std::str::FromStr;
+use std::env;
 
 fn main() {
-    let wallet = Keypair::new(); // generate a new keypair (public key + secret key)
-    let pubkey = Signer::pubkey(&wallet); // get the public key
+    dotenv().ok();
+
+    let pubkey = Pubkey::from_str(env::var("PUB_KEY")
+        .expect("Error finding the public key")
+            .as_str())
+        .unwrap();
+
     let rpc_url = String::from("http://127.0.0.1:8899"); // JSON RPC URL
+
+    dbg!(pubkey);
     let client = RpcClient::new_with_commitment(rpc_url, CommitmentConfig::confirmed());
 
     // check the available sols for our wallet (with public key) - before airdroping
