@@ -6,17 +6,20 @@ pub trait SolanaUser {
     fn new(env_key: &str) -> Self;
     fn get_balance(&self) -> u64;
     fn get_sols(&self);
+    fn sync_sols(&mut self);
 }
 
 #[derive(Debug)]
 pub struct User {
     pub_key: Pubkey,
+    balance: u64,
 }
 
 impl SolanaUser for User {
     fn new(env_key: &str) -> Self {
         Self {
-            pub_key: basic_helper::get_pubkey(env_key)
+            balance: 0,
+            pub_key: basic_helper::get_pubkey(env_key),
         }
     }
 
@@ -28,4 +31,7 @@ impl SolanaUser for User {
         solana_service::get_sols(&self.pub_key)
     }
 
+    fn sync_sols(&mut self) {
+        self.balance = Self::get_balance(&self);
+    }
 }

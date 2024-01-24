@@ -16,4 +16,7 @@ fn main() {
 
     let user2 = User::new("OTHER_PUB_KEY");
     println!("second user balance: {:?}", user2.get_balance());
+
+    // get sols - airdrop
+    // user2.get_sols();
 }
