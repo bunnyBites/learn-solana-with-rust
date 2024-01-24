@@ -1,18 +1,19 @@
 extern crate dotenv;
 
 use dotenv::dotenv;
+use model::user::User;
+use crate::model::user::SolanaUser;
 
-mod util;
 mod api;
+mod util;
+mod model;
 
 fn main() {
     dotenv().ok();
 
-    println!("Before getting sols");
-    api::solana_service::get_balance();
+    let user1 = User::new("MY_PUB_KEY");
+    println!("first user balance: {:?}", user1.get_balance());
 
-    api::solana_service::get_sols();
-
-    println!("After getting sols");
-    api::solana_service::get_balance();
+    let user2 = User::new("OTHER_PUB_KEY");
+    println!("second user balance: {:?}", user2.get_balance());
 }
