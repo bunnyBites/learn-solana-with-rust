@@ -7,6 +7,8 @@ pub trait SolanaUser {
     fn get_balance(&self) -> u64;
     fn get_sols(&self);
     fn sync_sols(&mut self);
+    fn get_pubkey(&self) -> Pubkey;
+    fn transfer_sols(&self, to_pubkey: &Pubkey, lamports_to_transfer: u64);
 }
 
 #[derive(Debug)]
@@ -23,6 +25,10 @@ impl SolanaUser for User {
         }
     }
 
+    fn get_pubkey(&self) -> Pubkey {
+        self.pub_key
+    }
+
     fn get_balance(&self) -> u64 {
         solana_service::get_balance(&self.pub_key)
     }
@@ -33,5 +39,14 @@ impl SolanaUser for User {
 
     fn sync_sols(&mut self) {
         self.balance = Self::get_balance(&self);
+    }
+
+    fn transfer_sols(&self, to_pubkey: &Pubkey, lamports_to_transfer: u64) {
+        solana_service::transfer_sols(
+            &self.pub_key,
+            "MY_SECRET_KEY",
+            to_pubkey,
+            lamports_to_transfer,
+        )
     }
 }

@@ -2,6 +2,7 @@ extern crate dotenv;
 
 use dotenv::dotenv;
 use model::user::User;
+use solana_sdk::native_token::LAMPORTS_PER_SOL;
 use crate::model::user::SolanaUser;
 
 mod api;
@@ -18,5 +19,11 @@ fn main() {
     println!("second user balance: {:?}", user2.get_balance());
 
     // get sols - airdrop
-    // user2.get_sols();
+    // user1.get_sols();
+
+    // transfer sols from user1 to user2
+    user1.transfer_sols(&user2.get_pubkey(), LAMPORTS_PER_SOL);
+
+    println!("first user balance: {:?}", user1.get_balance());
+    println!("second user balance: {:?}", user2.get_balance());
 }
