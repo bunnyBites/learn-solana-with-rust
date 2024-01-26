@@ -15,7 +15,7 @@ fn main() {
     // generate new pubkey
     // let pubkey = solana_service::generate_new_wallet();
 
-    let user1 = User::new("MY_PUB_KEY");
+    let mut user1 = User::new("MY_PUB_KEY");
     println!("first user balance: {:?}", user1.get_balance());
 
     let user2 = User::new("OTHER_PUB_KEY");

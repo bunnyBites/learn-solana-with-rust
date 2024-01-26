@@ -1,5 +1,5 @@
 use solana_sdk::{native_token::LAMPORTS_PER_SOL, pubkey::Pubkey, signature::Keypair, signer::Signer};
-use crate::util::basic_helper;
+use crate::{model::user::{SolanaUser, User}, util::basic_helper};
 
 #[allow(dead_code)]
 // generate new wallet and get its public key
@@ -28,15 +28,16 @@ pub fn get_balance(pub_key: &Pubkey) -> u64 {
 }
 
 // airdropping sols
-pub fn get_sols(pub_key: &Pubkey) {
+pub fn get_sols(user: &mut User) {
     let client = basic_helper::get_client();
 
     // get sols (this are used for transactions)
-    match client.request_airdrop(&pub_key, LAMPORTS_PER_SOL * 5) {
+    match client.request_airdrop(&user.get_pubkey(), LAMPORTS_PER_SOL * 5) {
         Ok(sig) => loop {
             if let Ok(confirmed) = client.confirm_transaction(&sig) {
                 if confirmed {
                     println!("Transaction: {} Status: {}", sig, confirmed);
+                    user.sync_sols();
                     break;
                 }
             }
@@ -47,7 +48,7 @@ pub fn get_sols(pub_key: &Pubkey) {
 
 // transfer sols
 pub fn transfer_sols(
-    from_pubkey: &Pubkey,
+    from: &mut User,
     from_secret: &str,
     to_pubkey: &Pubkey,
     lamports_to_send: u64,
@@ -56,19 +57,20 @@ pub fn transfer_sols(
     let client = basic_helper::get_client();
 
     // get instruction that will passed to the transaction
-    let ix = basic_helper::prepare_instruction(from_pubkey, to_pubkey, lamports_to_send);
+    let ix = basic_helper::prepare_instruction(&from.get_pubkey(), to_pubkey, lamports_to_send);
 
     // get keypair from the sender's secret key
     let keypair = basic_helper::get_keypair(from_secret);
 
     // add prepared instruction to a transaction
-    let txn = basic_helper::prepare_transaction(ix, from_pubkey, keypair, &client);
+    let txn = basic_helper::prepare_transaction(ix, &from.get_pubkey(), keypair, &client);
 
     // sending the transfer sol transaction
     match client.send_and_confirm_transaction(&txn) {
         Ok(sig) => loop {
             if let Ok(confirmed) = client.confirm_transaction(&sig) {
                 if confirmed {
+                    from.sync_sols();
                     println!("Transaction: {} Status: {}", sig, confirmed);
                     break;
                 }
