@@ -6,10 +6,9 @@ use crate::util::basic_helper;
 pub fn generate_new_wallet() -> Pubkey {
     let keypair = Keypair::new();
 
-    // get base58 secret key
-    // let secret_key_bytes = keypair.secret().to_bytes();
-    // let base58_secret_key = solana_sdk::bs58::encode(secret_key_bytes).into_string();
+    // keypair.to_base58_string() --> secret for our wallet (keypair)
 
+    // public key for our wallet
     Signer::pubkey(&keypair)
 }
 

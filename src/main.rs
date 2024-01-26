@@ -12,6 +12,9 @@ mod model;
 fn main() {
     dotenv().ok();
 
+    // generate new pubkey
+    // let pubkey = solana_service::generate_new_wallet();
+
     let user1 = User::new("MY_PUB_KEY");
     println!("first user balance: {:?}", user1.get_balance());
 
@@ -24,6 +27,7 @@ fn main() {
     // transfer sols from user1 to user2
     user1.transfer_sols(&user2.get_pubkey(), LAMPORTS_PER_SOL);
 
+    // After transfer
     println!("first user balance: {:?}", user1.get_balance());
     println!("second user balance: {:?}", user2.get_balance());
 }

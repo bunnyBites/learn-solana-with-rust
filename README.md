@@ -85,3 +85,32 @@ SOLs Before airdropping -> 0
 Transaction: 4WxHEwzZL6xv12b4rYALi4oV89TPNL93KXfZ1YSDwJwdHSweu Status: true
 SOLs After airdropping -> 1
 ```
+
+## Creating keypair
+Creating keypair is required throughout solana transactions.
+It's better to store specific values like public key and secret key in environment variables.
+
+
+### create a new keypair (wallet):
+```bash
+let keypair = Keypair::new();
+```
+
+### get public keypair
+```bash
+let pubkey = Signer::pubkey(&keypair)
+```
+
+### get secret for our keypair
+```bash
+let secret = keypair.to_base58_string()
+```
+
+### Sample .env file
+```sh
+MY_PUB_KEY=JBFs2brb5KrFH1D9HqX2YF5JigySowHPN79gBSaoxKrR
+
+OTHER_PUB_KEY=4uyGibipBrgE1Svsai4fg1BTaBWBMRTtxJKX7agFAdLe
+
+MY_SECRET_KEY=28rUCoiLSWGdH6ToJU7tzrjS6oU5u9MbeRJhBh7HN4h26E1w8uZCigJVArNssFEnH3gzak2DSiYQfBWaHyN5FjGu
+```
