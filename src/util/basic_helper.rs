@@ -24,7 +24,7 @@ pub fn get_keypair(env_key_for_secret: &str) -> Keypair {
 }
 
 pub fn get_client() -> RpcClient {
-    let rpc_url = String::from("http://127.0.0.1:8899"); // JSON RPC URL
+    let rpc_url = String::from("https://api.devnet.solana.com"); // JSON RPC URL for devnet
     RpcClient::new_with_commitment(rpc_url, CommitmentConfig::confirmed())
 }
 

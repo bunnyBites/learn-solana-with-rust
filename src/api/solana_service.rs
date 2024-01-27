@@ -6,7 +6,11 @@ use crate::{model::user::{SolanaUser, User}, util::basic_helper};
 pub fn generate_new_wallet() -> Pubkey {
     let keypair = Keypair::new();
 
-    // keypair.to_base58_string() --> secret for our wallet (keypair)
+    // public key
+    // dbg!(Signer::pubkey(&keypair));
+
+    // secret for our wallet (keypair)
+    // dbg!(keypair.to_base58_string());
 
     // public key for our wallet
     Signer::pubkey(&keypair)
